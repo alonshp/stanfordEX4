@@ -15,16 +15,11 @@ class animatedViewController: UIViewController {
     @IBOutlet weak var scoreLable: UILabel!
     
     @IBAction func DealThreeMoreCards(_ sender: UIButton) {
-        guard !game.deck.isNoMoreCardsInDeck() else {
-            return
-        }
-        game.dealThreeMoreCards()
-        for _ in 0..<3 {
-            addCardView()
-        }
-        updateViewFromModel()
+        handleWhenDealThreeMoreCards()
     }
     
+    @IBOutlet weak var dealThreeMoreCardsButton: UIButton!
+
     
     private lazy var game = SetGame()
     
@@ -47,7 +42,6 @@ class animatedViewController: UIViewController {
         for _ in 0..<12 {
             addCardView()
         }
-        
         addGestures()
     }
     
@@ -70,6 +64,40 @@ class animatedViewController: UIViewController {
         self.view.addGestureRecognizer(swipeUp)
     }
     
+    private func handleWhenDealThreeMoreCards(){
+        guard !game.deck.isNoMoreCardsInDeck() else {
+            return
+        }
+        if isMatchOnScreen {
+            for cardView in matchCardViewsOnScreen {
+                let prefFrame = cardView.frame
+                cardView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
+                                                               delay: 0,
+                                                               options: [.curveEaseInOut],
+                                                               animations: {cardView.alpha = 1},
+                                                               completion: {_ in
+                                                                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
+                                                                                                               delay: 0.5,
+                                                                                                               options: [.curveEaseInOut],
+                                                                                                               animations: {cardView.frame = prefFrame}
+                                                                )}
+                )
+
+
+            }
+        } else {
+            game.dealThreeMoreCards()
+            if game.deck.isNoMoreCardsInDeck() {
+                dealThreeMoreCardsButton.isHidden = true
+            }
+            for _ in 0..<3 {
+                addCardView()
+            }
+        }
+        updateViewFromModel()
+    }
+    
     fileprivate func updateCardViewsWhenNewGameStarted() {
         for cardView in cardViews {
             cardView.removeFromSuperview()
@@ -83,6 +111,7 @@ class animatedViewController: UIViewController {
     @objc func startNewGame(_ sender: UISwipeGestureRecognizer) {
         game.newGame()
         updateCardViewsWhenNewGameStarted()
+        dealThreeMoreCardsButton.isHidden = false
         updateViewFromModel()
     }
     
@@ -92,6 +121,7 @@ class animatedViewController: UIViewController {
         cardView.addGestureRecognizer(tap)
         
         self.view.addSubview(cardView)
+
         cardViews.append(cardView)
     }
     
@@ -112,6 +142,19 @@ class animatedViewController: UIViewController {
         }
     }
     
+    private func reArrangeCardViews(){
+        let numberOfCards = cardViews.count
+        let newGrid = getNewGrid(numberOfCards: numberOfCards)
+        for index in cardViews.indices {
+            let cardView = cardViews[index]
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
+                                                           delay: 0.5,
+                                                           options: [.curveEaseInOut],
+                                                           animations: {cardView.frame = newGrid[index]!}
+            )
+        }
+    }
+    
     private func updateViewFromModel() {
         let numberOfCards = game.cardsBeingPlayed.count
         let newGrid = getNewGrid(numberOfCards: numberOfCards)
@@ -121,9 +164,32 @@ class animatedViewController: UIViewController {
             let card = game.cardsBeingPlayed[index]
             let cardView = cardViews[index]
             cardView.cardLable.attributedText = getCardAttrString(card)
-            cardView.frame = newGrid[index]!
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
+                                                           delay: 0.5,
+                                                           options: [.curveEaseInOut],
+                                                           animations: {cardView.frame = newGrid[index]!}
+            )
             showCardSelection(card, cardView)
             showCardMatching(card, cardView)
+        }
+        if isMatchOnScreen {
+            for cardView in matchCardViewsOnScreen {
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
+                                                               delay: 0.5,
+                                                               options: [.curveEaseInOut],
+                                                               animations: {cardView.alpha = 0}
+                                                               
+                                                            
+                )
+            }
+            let timeUntilUpdateScreen = game.deck.isNoMoreCardsInDeck() ? 0.6 : 1.5
+            view.isUserInteractionEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeUntilUpdateScreen) {
+                self.game.updateCardsAfterThreeSelected()
+                self.handleWhenDealThreeMoreCards()
+                self.view.isUserInteractionEnabled = true
+                self.reArrangeCardViews()
+            }
         }
         if game.deck.isNoMoreCardsInDeck() {
             handleWhenNoMoreCardsInDeck()
@@ -222,5 +288,4 @@ class animatedViewController: UIViewController {
             cardView.removeFromSuperview()
         }
     }
-    
 }

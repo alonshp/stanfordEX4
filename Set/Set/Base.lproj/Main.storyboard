@@ -463,6 +463,7 @@
                     </view>
                     <connections>
                         <outlet property="boardView" destination="VFc-OI-kgX" id="ZKm-hu-TMj"/>
+                        <outlet property="dealThreeMoreCardsButton" destination="3ju-cT-88I" id="dWL-82-UIZ"/>
                         <outlet property="scoreLable" destination="wSk-jy-be1" id="P0Y-Oa-VSa"/>
                     </connections>
                 </viewController>
