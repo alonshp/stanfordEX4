@@ -22,6 +22,7 @@
 		16CE6109206111AC00175406 /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE6108206111AC00175406 /* NewViewController.swift */; };
 		16CE610B206123BA00175406 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610A206123BA00175406 /* CardView.swift */; };
 		16CE610D2061242A00175406 /* UIViewXibExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610C2061242A00175406 /* UIViewXibExtensions.swift */; };
+		16CE610F2067935100175406 /* animatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610E2067935100175406 /* animatedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		16CE6108206111AC00175406 /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
 		16CE610A206123BA00175406 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		16CE610C2061242A00175406 /* UIViewXibExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewXibExtensions.swift; sourceTree = "<group>"; };
+		16CE610E2067935100175406 /* animatedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = animatedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				163DCF04205E498700F94EAF /* SelectedCardsAttributes.swift */,
 				163DCEDF20581DF500F94EAF /* ViewController.swift */,
 				16CE6108206111AC00175406 /* NewViewController.swift */,
+				16CE610E2067935100175406 /* animatedViewController.swift */,
 				163DCEF4205A723200F94EAF /* Deck.swift */,
 				163DCEE120581DF500F94EAF /* Main.storyboard */,
 				163DCEF0205A636B00F94EAF /* SetGame.swift */,
@@ -243,6 +246,7 @@
 				163DCEF5205A723200F94EAF /* Deck.swift in Sources */,
 				16CE610B206123BA00175406 /* CardView.swift in Sources */,
 				163DCEF1205A636B00F94EAF /* SetGame.swift in Sources */,
+				16CE610F2067935100175406 /* animatedViewController.swift in Sources */,
 				16CE610520610B7700175406 /* Grid.swift in Sources */,
 				163DCEF3205A637700F94EAF /* Card.swift in Sources */,
 			);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="NU3-E0-3Mg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="p0U-Xd-Xid">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -412,6 +412,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uhv-pM-a8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="61.600000000000001" y="692.20389805097454"/>
+        </scene>
+        <!--Animated View Controller-->
+        <scene sceneID="D59-mT-mFi">
+            <objects>
+                <viewController id="p0U-Xd-Xid" customClass="animatedViewController" customModule="SetGame" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="txc-Lb-EtR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VFc-OI-kgX">
+                                <rect key="frame" x="16" y="20" width="343" height="585"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="bnR-1g-rNU">
+                                <rect key="frame" x="16" y="613" width="343" height="39"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wSk-jy-be1">
+                                        <rect key="frame" x="0.0" y="0.0" width="164" height="39"/>
+                                        <color key="backgroundColor" red="0.77254074811935425" green="0.76849251985549927" blue="0.77646607160568237" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ju-cT-88I">
+                                        <rect key="frame" x="179" y="0.0" width="164" height="39"/>
+                                        <color key="backgroundColor" red="0.77366572048272164" green="0.76992820492483405" blue="0.77740323604060912" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <state key="normal" title="Deal">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="DealThreeMoreCards:" destination="p0U-Xd-Xid" eventType="touchUpInside" id="lz7-RX-mmn"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VFc-OI-kgX" firstAttribute="leading" secondItem="Fee-AX-xiz" secondAttribute="leading" constant="16" id="1ZE-WM-lT1"/>
+                            <constraint firstItem="Fee-AX-xiz" firstAttribute="trailing" secondItem="bnR-1g-rNU" secondAttribute="trailing" constant="16" id="7GW-se-fJJ"/>
+                            <constraint firstItem="Fee-AX-xiz" firstAttribute="bottom" secondItem="bnR-1g-rNU" secondAttribute="bottom" constant="15" id="EjQ-e3-wtq"/>
+                            <constraint firstItem="VFc-OI-kgX" firstAttribute="top" secondItem="Fee-AX-xiz" secondAttribute="top" id="IfM-Zh-UHW"/>
+                            <constraint firstItem="bnR-1g-rNU" firstAttribute="leading" secondItem="Fee-AX-xiz" secondAttribute="leading" constant="16" id="hMD-hk-Omd"/>
+                            <constraint firstItem="Fee-AX-xiz" firstAttribute="trailing" secondItem="VFc-OI-kgX" secondAttribute="trailing" constant="16" id="pnK-n7-2KV"/>
+                            <constraint firstItem="bnR-1g-rNU" firstAttribute="top" secondItem="VFc-OI-kgX" secondAttribute="bottom" constant="8" symbolic="YES" id="x4P-re-kpR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Fee-AX-xiz"/>
+                    </view>
+                    <connections>
+                        <outlet property="boardView" destination="VFc-OI-kgX" id="ZKm-hu-TMj"/>
+                        <outlet property="scoreLable" destination="wSk-jy-be1" id="P0Y-Oa-VSa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p0G-sW-LPq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="68" y="1372"/>
         </scene>
     </scenes>
 </document>
