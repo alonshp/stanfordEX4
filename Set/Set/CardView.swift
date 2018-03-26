@@ -15,6 +15,16 @@ class CardView: UIView {
     
     @IBOutlet weak var cardInternalView: UIView!
     
+    var isFaceUp: Bool = true { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    
+    override func draw(_ rect: CGRect) {
+        if isFaceUp {
+            cardLable.isHidden = false
+        } else {
+            cardLable.isHidden = true
+        }
+    }
+    
     // storyboard initializer
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
