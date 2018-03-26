@@ -28,11 +28,15 @@ class animatedViewController: UIViewController {
     
     private var isViewDidLayoutSubviewsNeedToUpdateView = true
     
+    private var isViewDidAppearNeedToUpdateView = true
+    
     private var wasMatchOnScreenOnLastMoveWhenDeckIsEmpty = false
     
-    private var matchCardViewsIndexesOnLastMoveWhenDeckIsEmpty = [Int]()
+    private var matchCardViewsOnLastMoveWhenDeckIsEmpty = [CardView]()
     
-    private var matchCardViewsIndexesOnScreen = [Int]()
+    private var matchCardViewsOnScreen = [CardView]()
+    
+    var firstLayingTheCards = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +45,21 @@ class animatedViewController: UIViewController {
         for _ in 0..<12 {
             addCardView()
         }
+        view.layoutSubviews()
         addGestures()
     }
     
-    override func viewDidLayoutSubviews() {
-        if isViewDidLayoutSubviewsNeedToUpdateView {
+//    override func viewDidLayoutSubviews() {
+//        if isViewDidLayoutSubviewsNeedToUpdateView {
+//            updateViewFromModel()
+//            isViewDidLayoutSubviewsNeedToUpdateView = false
+//        }
+//    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        if isViewDidAppearNeedToUpdateView {
+            isViewDidAppearNeedToUpdateView = false
             updateViewFromModel()
-            isViewDidLayoutSubviewsNeedToUpdateView = false
         }
     }
     
@@ -77,18 +89,18 @@ class animatedViewController: UIViewController {
         }
         if isMatchOnScreen {
             isMatchOnScreen = false
-            for cardViewIndex in matchCardViewsIndexesOnScreen {
-                let prefFrame = cardViews[cardViewIndex].frame
-                cardViews[cardViewIndex].frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            for cardView in matchCardViewsOnScreen {
+                let prefFrame = cardView.frame
+                cardView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
                 UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
                                                                delay: 0,
                                                                options: [.curveEaseInOut],
-                                                               animations: {self.cardViews[cardViewIndex].alpha = 1},
+                                                               animations: {cardView.alpha = 1},
                                                                completion: {_ in
                                                                 UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
                                                                                                                delay: 0.5,
                                                                                                                options: [.curveEaseInOut],
-                                                                                                               animations: {self.cardViews[cardViewIndex].frame = prefFrame}
+                                                                                                               animations: {cardView.frame = prefFrame}
                                                                 )}
                 )
 
@@ -120,6 +132,7 @@ class animatedViewController: UIViewController {
         game.newGame()
         updateCardViewsWhenNewGameStarted()
         dealThreeMoreCardsButton.isHidden = false
+        firstLayingTheCards = true
         updateViewFromModel()
     }
     
@@ -127,10 +140,11 @@ class animatedViewController: UIViewController {
         let cardView = CardView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         cardView.addGestureRecognizer(tap)
-        cardView.isFaceUp = false
         
-        self.view.addSubview(cardView)
-
+        self.boardView.addSubview(cardView)
+        cardView.isFaceUp = false
+        cardView.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
+        
         cardViews.append(cardView)
     }
     
@@ -145,14 +159,15 @@ class animatedViewController: UIViewController {
     
     private func handleWhenNoMoreCardsInDeck() {
         wasMatchOnScreenOnLastMoveWhenDeckIsEmpty = true
-        for cardViewIndex in matchCardViewsIndexesOnScreen {
-            cardViews.remove(at: cardViewIndex)
-            matchCardViewsIndexesOnLastMoveWhenDeckIsEmpty.append(cardViewIndex)
+        for cardView in matchCardViewsOnScreen {
+            cardViews.remove(at: cardViews.index(of: cardView)!)
+            matchCardViewsOnLastMoveWhenDeckIsEmpty.append(cardView)
         }
+        reArrangeCardViews()
     }
     
     private func reArrangeCardViews(){
-        let numberOfCards = cardViews.count + 3
+        let numberOfCards = cardViews.count
         let newGrid = getNewGrid(numberOfCards: numberOfCards)
         for index in cardViews.indices {
             let cardView = cardViews[index]
@@ -165,42 +180,50 @@ class animatedViewController: UIViewController {
     }
     
     private func updateViewFromModel() {
+        var delayFactor = 0.5
         let numberOfCards = game.cardsBeingPlayed.count
         let newGrid = getNewGrid(numberOfCards: numberOfCards)
         isMatchOnScreen = false
-        matchCardViewsIndexesOnScreen = [Int]()
+        matchCardViewsOnScreen = [CardView]()
         for index in game.cardsBeingPlayed.indices {
             let card = game.cardsBeingPlayed[index]
             let cardView = cardViews[index]
             cardView.cardLable.attributedText = getCardAttrString(card)
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
-                                                           delay: 0.5,
+
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.7,
+                                                           delay: delayFactor,
                                                            options: [.curveEaseInOut],
                                                            animations: {cardView.frame = newGrid[index]!},
-                                                           completion: {_ in if !cardView.isFaceUp && !self.isMatchOnScreen { UIView.transition(
-                                                            with: cardView,
-                                                            duration: 0.5,
-                                                            options: [.transitionFlipFromLeft],
-                                                            animations: {
-                                                                cardView.isFaceUp = !cardView.isFaceUp
-                                                                }
-                                                            )}
+                                                           completion: {_ in if !cardView.isFaceUp && !self.isMatchOnScreen {
+                                                            UIView.transition(
+                                                                with: cardView,
+                                                                duration: 0.5,
+                                                                options: [.transitionFlipFromLeft],
+                                                                animations: {cardView.isFaceUp = !cardView.isFaceUp }
+                                                                )
+                                                            }
                             })
             showCardSelection(card, cardView)
             showCardMatching(card, cardView)
+            if firstLayingTheCards {
+                delayFactor += 0.2
+            }
+        }
+        if firstLayingTheCards {
+            firstLayingTheCards = false
         }
         if isMatchOnScreen {
-            for cardViewIndex in matchCardViewsIndexesOnScreen {
+            for cardView in matchCardViewsOnScreen {
                 UIView.transition(
-                    with: cardViews[cardViewIndex],
+                    with: cardView,
                     duration: 0.5,
                     options: [.transitionFlipFromLeft],
-                    animations: {self.cardViews[cardViewIndex].isFaceUp = !self.cardViews[cardViewIndex].isFaceUp}
+                    animations: {cardView.isFaceUp = !cardView.isFaceUp}
                 )
                 UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
-                                                               delay: 3.0,
+                                                               delay: 1.0,
                                                                options: [.curveEaseInOut],
-                                                               animations: {self.cardViews[cardViewIndex].alpha = 0}
+                                                               animations: {cardView.alpha = 0}
                     
                     
                 )
@@ -211,7 +234,6 @@ class animatedViewController: UIViewController {
                 self.game.updateCardsAfterThreeSelected()
                 self.handleWhenDealThreeMoreCards()
                 self.view.isUserInteractionEnabled = true
-//                self.reArrangeCardViews()
             }
         }
         if game.deck.isNoMoreCardsInDeck() {
@@ -227,7 +249,7 @@ class animatedViewController: UIViewController {
             cardView.cardInternalView.layer.borderWidth = 3.0
             cardView.cardInternalView.layer.borderColor = UIColor.green.cgColor
             isMatchOnScreen = true
-            matchCardViewsIndexesOnScreen.append(cardViews.index(of: cardView)!)
+            matchCardViewsOnScreen.append(cardView)
         } else if game.selectedCardsIndex.count == 3, card.isSelected {
             cardView.cardInternalView.layer.borderWidth = 3.0
             cardView.cardInternalView.layer.borderColor = UIColor.red.cgColor
@@ -236,7 +258,7 @@ class animatedViewController: UIViewController {
     }
     
     private func getNewGrid(numberOfCards: Int) -> Grid {
-        return Grid(layout: Grid.Layout.dimensions(rowCount: numberOfCards / 3, columnCount:  3), frame: boardView.frame)
+        return Grid(layout: Grid.Layout.dimensions(rowCount: numberOfCards / 3, columnCount:  3), frame: self.boardView.frame)
     }
     
     private func showCardSelection(_ card: Card, _ cardView: CardView) {
@@ -307,8 +329,8 @@ class animatedViewController: UIViewController {
     
     private func handleWhenWasMatchAndDeckIsEmpty() {
         self.wasMatchOnScreenOnLastMoveWhenDeckIsEmpty = false
-        for cardViewIndex in self.matchCardViewsIndexesOnLastMoveWhenDeckIsEmpty {
-            cardViews[cardViewIndex].removeFromSuperview()
+        for cardView in self.matchCardViewsOnLastMoveWhenDeckIsEmpty {
+            cardView.removeFromSuperview()
         }
     }
 }
