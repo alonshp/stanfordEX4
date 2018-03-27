@@ -72,7 +72,6 @@ class ConcentrationViewController: UIViewController {
     @IBAction func startNewGame(_ sender: UIButton) {
         game.startNewGame()
         emoji = [Int: String]()
-        updateEmojiTheme()
         updateViewFromModel()
     }
     
@@ -105,7 +104,7 @@ class ConcentrationViewController: UIViewController {
     private let ThemeBackgroudColors = ["Animals": #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), "Faces":#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), "Sports": #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1), "Halloween":#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
     private let ThemeCardsBackgroundColors = ["Animals": #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), "Faces":#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1), "Sports": #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1), "Halloween":#colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)]
     
-    private var emojiNames: [String]{
+    var emojiThemeNames: [String]{
         return [String](emojiThemes.keys)
     }
     
@@ -122,10 +121,9 @@ class ConcentrationViewController: UIViewController {
     }
     
     
-    private func updateEmojiTheme(){
-        let choosedEmojiThemeNumber = emojiNames.count.arc4random
-        if let choosedEmojies = emojiThemes[emojiNames[choosedEmojiThemeNumber]]{
-            currTheme = emojiNames[choosedEmojiThemeNumber]
+    func updateEmojiTheme(_ themeName: String){
+        if let choosedEmojies = emojiThemes[themeName] {
+            currTheme = themeName
             emojiChoices = choosedEmojies
             changeGameTheme()
         }
