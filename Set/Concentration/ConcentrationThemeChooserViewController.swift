@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConcentrationThemeChooserViewController: UIViewController {
+class ConcentrationThemeChooserViewController: UIViewController, UISplitViewControllerDelegate {
 
     override func viewDidLoad() {
         let cvc = ConcentrationViewController()
@@ -17,6 +17,23 @@ class ConcentrationThemeChooserViewController: UIViewController {
             themeButtons[index].setTitle(themeNames[index], for: UIControlState.normal)
         }
     }
+    
+    override func awakeFromNib() {
+        splitViewController?.delegate = self
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        if let cvc = secondaryViewController as? ConcentrationViewController{
+            if cvc.currTheme == nil {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
     @IBOutlet var themeButtons: [UIButton]!
     
     // MARK: - Navigation

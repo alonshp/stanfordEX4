@@ -14,7 +14,7 @@ class ConcentrationViewController: UIViewController {
     
     private var faceUpCardsNumbers = [Int]()
     
-    private var currTheme = "Halloween"
+    var currTheme: String?
     
     var numberOfPairsOfCards: Int {
         return (cardButtons.count + 1) / 2
@@ -85,7 +85,9 @@ class ConcentrationViewController: UIViewController {
                 button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             } else {
                 button.setTitle("", for: UIControlState.normal)
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : ThemeCardsBackgroundColors[currTheme]
+                if let currTheme = self.currTheme {
+                    button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : ThemeCardsBackgroundColors[currTheme]
+                }
             }
         }
         
@@ -130,11 +132,13 @@ class ConcentrationViewController: UIViewController {
     }
     
     private func changeGameTheme(){
-        view.backgroundColor = ThemeBackgroudColors[currTheme]
-        flipCountLabel.textColor = ThemeCardsBackgroundColors[currTheme]
-        gameScoreLable.textColor = ThemeCardsBackgroundColors[currTheme]
-        newGameButton.backgroundColor = ThemeCardsBackgroundColors[currTheme]
-        changeCardsBackgroundColor(color: ThemeCardsBackgroundColors[currTheme]!)
+        if let currTheme = self.currTheme {
+            view.backgroundColor = ThemeBackgroudColors[currTheme]
+            flipCountLabel.textColor = ThemeCardsBackgroundColors[currTheme]
+            gameScoreLable.textColor = ThemeCardsBackgroundColors[currTheme]
+            newGameButton.backgroundColor = ThemeCardsBackgroundColors[currTheme]
+            changeCardsBackgroundColor(color: ThemeCardsBackgroundColors[currTheme]!)
+        }
     }
     
     private func changeCardsBackgroundColor(color: UIColor){
