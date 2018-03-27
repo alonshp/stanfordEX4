@@ -142,22 +142,21 @@ public struct SetGame {
     }
     
     public func isCardsMatch(cards: [Card]) -> Bool{
-//        let cardsAttributesCount = getCardsAttributesCount(cards: cards)
-//
-//        let cardsColorCount = cardsAttributesCount.cardsColorCount
-//        let cardsShadingCount = cardsAttributesCount.cardsShadingCount
-//        let cardsNumberCount = cardsAttributesCount.cardsNumberCount
-//        let cardsSymbolCount = cardsAttributesCount.cardsSymbolCount
-//
-//        if (cardsColorCount == 1 || cardsColorCount == Card.Color.all.count)
-//            && (cardsShadingCount == 1 || cardsShadingCount == Card.Shading.all.count)
-//            && (cardsNumberCount == 1 || cardsNumberCount == Card.Number.all.count)
-//            && (cardsSymbolCount == 1 || cardsSymbolCount == Card.Symbol.all.count) {
-//            return true
-//        } else {
-//            return false
-//        }
-        return true
+        let cardsAttributesCount = getCardsAttributesCount(cards: cards)
+
+        let cardsColorCount = cardsAttributesCount.cardsColorCount
+        let cardsShadingCount = cardsAttributesCount.cardsShadingCount
+        let cardsNumberCount = cardsAttributesCount.cardsNumberCount
+        let cardsSymbolCount = cardsAttributesCount.cardsSymbolCount
+
+        if (cardsColorCount == 1 || cardsColorCount == Card.Color.all.count)
+            && (cardsShadingCount == 1 || cardsShadingCount == Card.Shading.all.count)
+            && (cardsNumberCount == 1 || cardsNumberCount == Card.Number.all.count)
+            && (cardsSymbolCount == 1 || cardsSymbolCount == Card.Symbol.all.count) {
+            return true
+        } else {
+            return false
+        }
     }
     
     mutating func newGame(){
