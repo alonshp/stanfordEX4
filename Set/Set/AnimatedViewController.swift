@@ -1,5 +1,5 @@
 //
-//  animatedViewController.swift
+//  AnimatedViewController.swift
 //  SetGame
 //
 //  Created by Alon Shprung on 3/25/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class animatedViewController: UIViewController {
+class AnimatedViewController: UIViewController {
 
     @IBOutlet weak var boardView: UIView!
     
@@ -19,14 +19,16 @@ class animatedViewController: UIViewController {
     }
     
     @IBOutlet weak var dealThreeMoreCardsButton: UIButton!
+    
+    private lazy var animator = UIDynamicAnimator(referenceView: view)
+    
+    private lazy var cardBehavior = CardBehavior(in: animator)
 
     private lazy var game = SetGame()
     
     private var cardViews = [CardView]()
     
     private var isMatchOnScreen = false
-    
-    private var isViewDidLayoutSubviewsNeedToUpdateView = true
     
     private var isViewDidAppearNeedToUpdateView = true
     
@@ -35,6 +37,8 @@ class animatedViewController: UIViewController {
     private var matchCardViewsOnLastMoveWhenDeckIsEmpty = [CardView]()
     
     private var matchCardViewsOnScreen = [CardView]()
+    
+    private var prevFrameOfMatchCardViewsOnScreen = [CardView : CGRect]()
     
     var firstLayingTheCards = true
     
@@ -48,13 +52,6 @@ class animatedViewController: UIViewController {
         view.layoutSubviews()
         addGestures()
     }
-    
-//    override func viewDidLayoutSubviews() {
-//        if isViewDidLayoutSubviewsNeedToUpdateView {
-//            updateViewFromModel()
-//            isViewDidLayoutSubviewsNeedToUpdateView = false
-//        }
-//    }
 
     override func viewDidAppear(_ animated: Bool) {
         if isViewDidAppearNeedToUpdateView {
@@ -90,22 +87,23 @@ class animatedViewController: UIViewController {
         if isMatchOnScreen {
             isMatchOnScreen = false
             for cardView in matchCardViewsOnScreen {
-                let prefFrame = cardView.frame
-                cardView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
-                                                               delay: 0,
-                                                               options: [.curveEaseInOut],
-                                                               animations: {cardView.alpha = 1},
-                                                               completion: {_ in
-                                                                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
-                                                                                                               delay: 0.5,
-                                                                                                               options: [.curveEaseInOut],
-                                                                                                               animations: {cardView.frame = prefFrame}
-                                                                )}
-                )
-
-
+                if let cardViewPrevFrame = prevFrameOfMatchCardViewsOnScreen[cardView] {
+                    cardView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+                    cardView.transform = CGAffineTransform.init(rotationAngle: 0)
+                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
+                                                                   delay: 0,
+                                                                   options: [.curveEaseInOut],
+                                                                   animations: {cardView.alpha = 1},
+                                                                   completion: {_ in
+                                                                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
+                                                                                                                   delay: 0.5,
+                                                                                                                   options: [.curveEaseInOut],
+                                                                                                                   animations: {cardView.frame = cardViewPrevFrame}
+                                                                    )}
+                    )
+                }
             }
+            prevFrameOfMatchCardViewsOnScreen.removeAll()
         } else {
             game.dealThreeMoreCards()
             if game.deck.isNoMoreCardsInDeck() {
@@ -137,13 +135,12 @@ class animatedViewController: UIViewController {
     }
     
     private func addCardView(){
-        let cardView = CardView()
+        let cardView = CardView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         cardView.addGestureRecognizer(tap)
         
         self.boardView.addSubview(cardView)
         cardView.isFaceUp = false
-        cardView.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
         
         cardViews.append(cardView)
     }
@@ -214,21 +211,32 @@ class animatedViewController: UIViewController {
         }
         if isMatchOnScreen {
             for cardView in matchCardViewsOnScreen {
-                UIView.transition(
-                    with: cardView,
-                    duration: 0.5,
-                    options: [.transitionFlipFromLeft],
-                    animations: {cardView.isFaceUp = !cardView.isFaceUp}
-                )
-                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
-                                                               delay: 1.0,
-                                                               options: [.curveEaseInOut],
-                                                               animations: {cardView.alpha = 0}
-                    
-                    
-                )
+                prevFrameOfMatchCardViewsOnScreen[cardView] = cardView.frame
+                cardBehavior.addItem(cardView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    self.cardBehavior.removeItem(cardView)
+                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
+                                                                   delay: 0,
+                                                                   options: [.curveEaseInOut],
+                                                                   animations: {cardView.frame = CGRect(x: 0, y: 0, width: cardView.frame.width, height: cardView.frame.height)},
+                                                                   completion: {_ in
+                                                                    UIView.transition(
+                                                                    with: cardView,
+                                                                    duration: 0.5,
+                                                                    options: [.transitionFlipFromLeft],
+                                                                    animations: {cardView.isFaceUp = !cardView.isFaceUp},
+                                                                    completion: {_ in
+                                                                        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
+                                                                                                                       delay: 1.0,
+                                                                                                                       options: [.curveEaseInOut],
+                                                                                                                       animations: {cardView.alpha = 0}
+                                                                        )}
+                                                                    )}
+                    )
+
+                }
             }
-            let timeUntilUpdateScreen = game.deck.isNoMoreCardsInDeck() ? 0.6 : 1.5
+            let timeUntilUpdateScreen = game.deck.isNoMoreCardsInDeck() ? 0.6 : 2.5
             view.isUserInteractionEnabled = false
             DispatchQueue.main.asyncAfter(deadline: .now() + timeUntilUpdateScreen) {
                 self.game.updateCardsAfterThreeSelected()

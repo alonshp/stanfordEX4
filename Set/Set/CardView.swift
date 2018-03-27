@@ -38,7 +38,7 @@ class CardView: UIView {
     
     // code initializer
     override init(frame: CGRect) {
-        super.init(frame: CGRect.zero)
+        super.init(frame: frame)
         fromNib()
     }
     

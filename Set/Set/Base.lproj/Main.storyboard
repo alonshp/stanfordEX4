@@ -416,7 +416,7 @@
         <!--Animated View Controller-->
         <scene sceneID="D59-mT-mFi">
             <objects>
-                <viewController id="p0U-Xd-Xid" customClass="animatedViewController" customModule="SetGame" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="p0U-Xd-Xid" customClass="AnimatedViewController" customModule="SetGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="txc-Lb-EtR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
