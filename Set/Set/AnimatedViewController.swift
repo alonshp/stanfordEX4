@@ -84,35 +84,46 @@ class AnimatedViewController: UIViewController {
         guard !game.deck.isNoMoreCardsInDeck() else {
             return
         }
-        if isMatchOnScreen {
-            isMatchOnScreen = false
-            for cardView in matchCardViewsOnScreen {
-                if let cardViewPrevFrame = prevFrameOfMatchCardViewsOnScreen[cardView] {
-                    cardView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
-                    cardView.transform = CGAffineTransform.init(rotationAngle: 0)
-                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
-                                                                   delay: 0,
-                                                                   options: [.curveEaseInOut],
-                                                                   animations: {cardView.alpha = 1},
-                                                                   completion: {_ in
-                                                                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
-                                                                                                                   delay: 0.5,
-                                                                                                                   options: [.curveEaseInOut],
-                                                                                                                   animations: {cardView.frame = cardViewPrevFrame}
-                                                                    )}
-                    )
-                }
-            }
-            prevFrameOfMatchCardViewsOnScreen.removeAll()
-        } else {
-            game.dealThreeMoreCards()
-            if game.deck.isNoMoreCardsInDeck() {
-                dealThreeMoreCardsButton.isHidden = true
-            }
-            for _ in 0..<3 {
-                addCardView()
+        game.dealThreeMoreCards()
+        if game.deck.isNoMoreCardsInDeck() {
+            dealThreeMoreCardsButton.isHidden = true
+        }
+        for _ in 0..<3 {
+            addCardView()
+        }
+        updateViewFromModel()
+    }
+    
+    private func runPropertyAnimatorCardViewBackInPlace(_ cardView: CardView, _ cardViewPrevFrame: CGRect) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0,
+                                                              delay: 0.5,
+                                                              options: [.curveEaseInOut],
+                                                              animations: {cardView.frame = cardViewPrevFrame}
+        )
+    }
+    
+    private func runPropertyAnimatorAfterMatchOnScreen(_ cardView: CardView, _ cardViewPrevFrame: CGRect) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
+                                                        delay: 0,
+                                                        options: [.curveEaseInOut],
+                                                        animations: {cardView.alpha = 1},
+                                                        completion: {_ in self.runPropertyAnimatorCardViewBackInPlace(cardView, cardViewPrevFrame)}
+        )
+    }
+    
+    private func handleAfterMatchOnScreen() {
+        guard isMatchOnScreen else {
+            return
+        }
+        isMatchOnScreen = false
+        for cardView in matchCardViewsOnScreen {
+            if let cardViewPrevFrame = prevFrameOfMatchCardViewsOnScreen[cardView] {
+                cardView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+                cardView.transform = CGAffineTransform.init(rotationAngle: 0)
+                runPropertyAnimatorAfterMatchOnScreen(cardView, cardViewPrevFrame)
             }
         }
+        prevFrameOfMatchCardViewsOnScreen.removeAll()
         updateViewFromModel()
     }
     
@@ -163,17 +174,78 @@ class AnimatedViewController: UIViewController {
         reArrangeCardViews()
     }
     
+    private func runPropertyAnimatorMoveCardToPlaceInGrid(_ cardView: CardView, _ newGrid: Grid, _ index: Int) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
+                                                              delay: 0.5,
+                                                              options: [.curveEaseInOut],
+                                                              animations: {cardView.frame = newGrid[index]!}
+        )
+    }
+    
     private func reArrangeCardViews(){
         let numberOfCards = cardViews.count
         let newGrid = getNewGrid(numberOfCards: numberOfCards)
         for index in cardViews.indices {
             let cardView = cardViews[index]
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 2.0,
-                                                           delay: 0.5,
-                                                           options: [.curveEaseInOut],
-                                                           animations: {cardView.frame = newGrid[index]!}
-            )
+            runPropertyAnimatorMoveCardToPlaceInGrid(cardView, newGrid, index)
         }
+    }
+    
+    private func runPropertyAnimatorCardViewAlphaToZero(_ cardView: CardView) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
+                                                        delay: 1.0,
+                                                        options: [.curveEaseInOut],
+                                                        animations: {cardView.alpha = 0}
+        )
+    }
+    
+    private func runPropertyAnimatorWhenMatchOnScreen(_ cardView: CardView) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
+                                                        delay: 0,
+                                                        options: [.curveEaseInOut],
+                                                        animations: {cardView.frame = CGRect(x: 0, y: 0, width: cardView.frame.width, height: cardView.frame.height)},
+                                                        completion: {_ in
+                                                                UIView.transition(
+                                                                    with: cardView,
+                                                                    duration: 0.5,
+                                                                    options: [.transitionFlipFromLeft],
+                                                                    animations: {cardView.isFaceUp = !cardView.isFaceUp},
+                                                                    completion: {_ in self.runPropertyAnimatorCardViewAlphaToZero(cardView)})}
+        )
+    }
+    
+    private func handleWhenMatchOnScreen() {
+        for cardView in matchCardViewsOnScreen {
+            prevFrameOfMatchCardViewsOnScreen[cardView] = cardView.frame
+            cardBehavior.addItem(cardView)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.cardBehavior.removeItem(cardView)
+                self.runPropertyAnimatorWhenMatchOnScreen(cardView)
+                
+            }
+        }
+        let timeUntilUpdateScreen = game.deck.isNoMoreCardsInDeck() ? 0.6 : 2.5
+        view.isUserInteractionEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeUntilUpdateScreen) {
+            self.game.updateCardsAfterThreeSelected()
+            self.handleAfterMatchOnScreen()
+            self.view.isUserInteractionEnabled = true
+        }
+    }
+    
+    private func runPropertyAnimatorWhenUpdateViewFromModel(_ delayFactor: Double, _ cardView: CardView, _ newGrid: Grid, _ index: Int) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.7,
+                                                        delay: delayFactor,
+                                                        options: [.curveEaseInOut],
+                                                        animations: {cardView.frame = newGrid[index]!},
+                                                        completion: {_ in if !cardView.isFaceUp && !self.isMatchOnScreen {
+                                                                UIView.transition(
+                                                                    with: cardView,
+                                                                    duration: 0.5,
+                                                                    options: [.transitionFlipFromLeft],
+                                                                    animations: {cardView.isFaceUp = !cardView.isFaceUp }
+                                                                )}
+        })
     }
     
     private func updateViewFromModel() {
@@ -186,20 +258,7 @@ class AnimatedViewController: UIViewController {
             let card = game.cardsBeingPlayed[index]
             let cardView = cardViews[index]
             cardView.cardLable.attributedText = getCardAttrString(card)
-
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.7,
-                                                           delay: delayFactor,
-                                                           options: [.curveEaseInOut],
-                                                           animations: {cardView.frame = newGrid[index]!},
-                                                           completion: {_ in if !cardView.isFaceUp && !self.isMatchOnScreen {
-                                                            UIView.transition(
-                                                                with: cardView,
-                                                                duration: 0.5,
-                                                                options: [.transitionFlipFromLeft],
-                                                                animations: {cardView.isFaceUp = !cardView.isFaceUp }
-                                                                )
-                                                            }
-                            })
+            runPropertyAnimatorWhenUpdateViewFromModel(delayFactor, cardView, newGrid, index)
             showCardSelection(card, cardView)
             showCardMatching(card, cardView)
             if firstLayingTheCards {
@@ -210,39 +269,7 @@ class AnimatedViewController: UIViewController {
             firstLayingTheCards = false
         }
         if isMatchOnScreen {
-            for cardView in matchCardViewsOnScreen {
-                prevFrameOfMatchCardViewsOnScreen[cardView] = cardView.frame
-                cardBehavior.addItem(cardView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    self.cardBehavior.removeItem(cardView)
-                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5,
-                                                                   delay: 0,
-                                                                   options: [.curveEaseInOut],
-                                                                   animations: {cardView.frame = CGRect(x: 0, y: 0, width: cardView.frame.width, height: cardView.frame.height)},
-                                                                   completion: {_ in
-                                                                    UIView.transition(
-                                                                    with: cardView,
-                                                                    duration: 0.5,
-                                                                    options: [.transitionFlipFromLeft],
-                                                                    animations: {cardView.isFaceUp = !cardView.isFaceUp},
-                                                                    completion: {_ in
-                                                                        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.6,
-                                                                                                                       delay: 1.0,
-                                                                                                                       options: [.curveEaseInOut],
-                                                                                                                       animations: {cardView.alpha = 0}
-                                                                        )}
-                                                                    )}
-                    )
-
-                }
-            }
-            let timeUntilUpdateScreen = game.deck.isNoMoreCardsInDeck() ? 0.6 : 2.5
-            view.isUserInteractionEnabled = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + timeUntilUpdateScreen) {
-                self.game.updateCardsAfterThreeSelected()
-                self.handleWhenDealThreeMoreCards()
-                self.view.isUserInteractionEnabled = true
-            }
+            handleWhenMatchOnScreen()
         }
         if game.deck.isNoMoreCardsInDeck() {
             handleWhenNoMoreCardsInDeck()
