@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		160B10B6206A13A40092EF36 /* CardBehavier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10B5206A13A40092EF36 /* CardBehavier.swift */; };
+		160B10B9206A383A0092EF36 /* ConcentrationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10B8206A383A0092EF36 /* ConcentrationCard.swift */; };
+		160B10BB206A388D0092EF36 /* Concentration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10BA206A388D0092EF36 /* Concentration.swift */; };
+		160B10BD206A38F70092EF36 /* ConcentrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10BC206A38F70092EF36 /* ConcentrationViewController.swift */; };
 		163DCEDE20581DF500F94EAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163DCEDD20581DF500F94EAF /* AppDelegate.swift */; };
 		163DCEE320581DF500F94EAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 163DCEE120581DF500F94EAF /* Main.storyboard */; };
 		163DCEE520581DF500F94EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 163DCEE420581DF500F94EAF /* Assets.xcassets */; };
@@ -36,6 +39,9 @@
 
 /* Begin PBXFileReference section */
 		160B10B5206A13A40092EF36 /* CardBehavier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBehavier.swift; sourceTree = "<group>"; };
+		160B10B8206A383A0092EF36 /* ConcentrationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationCard.swift; sourceTree = "<group>"; };
+		160B10BA206A388D0092EF36 /* Concentration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concentration.swift; sourceTree = "<group>"; };
+		160B10BC206A38F70092EF36 /* ConcentrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationViewController.swift; sourceTree = "<group>"; };
 		163DCEDA20581DF500F94EAF /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		163DCEDD20581DF500F94EAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		163DCEE220581DF500F94EAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -74,9 +80,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		160B10B7206A37B90092EF36 /* Concentration */ = {
+			isa = PBXGroup;
+			children = (
+				160B10B8206A383A0092EF36 /* ConcentrationCard.swift */,
+				160B10BA206A388D0092EF36 /* Concentration.swift */,
+				160B10BC206A38F70092EF36 /* ConcentrationViewController.swift */,
+			);
+			path = Concentration;
+			sourceTree = "<group>";
+		};
 		163DCED120581DF500F94EAF = {
 			isa = PBXGroup;
 			children = (
+				160B10B7206A37B90092EF36 /* Concentration */,
 				163DCEDC20581DF500F94EAF /* Set */,
 				163DCEFB205AB23E00F94EAF /* SetTests */,
 				163DCEDB20581DF500F94EAF /* Products */,
@@ -237,8 +254,11 @@
 			files = (
 				16CE610D2061242A00175406 /* UIViewXibExtensions.swift in Sources */,
 				160B10B6206A13A40092EF36 /* CardBehavier.swift in Sources */,
+				160B10BD206A38F70092EF36 /* ConcentrationViewController.swift in Sources */,
+				160B10B9206A383A0092EF36 /* ConcentrationCard.swift in Sources */,
 				163DCF05205E498700F94EAF /* SelectedCardsAttributes.swift in Sources */,
 				163DCEDE20581DF500F94EAF /* AppDelegate.swift in Sources */,
+				160B10BB206A388D0092EF36 /* Concentration.swift in Sources */,
 				163DCEF5205A723200F94EAF /* Deck.swift in Sources */,
 				16CE610B206123BA00175406 /* CardView.swift in Sources */,
 				163DCEF1205A636B00F94EAF /* SetGame.swift in Sources */,
