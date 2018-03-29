@@ -87,6 +87,8 @@ class ConcentrationViewController: UIViewController {
                 button.setTitle("", for: UIControlState.normal)
                 if let currTheme = self.currTheme {
                     button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : ThemeCardsBackgroundColors[currTheme]
+                } else {
+                    button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : #colorLiteral(red: 0.9979783893, green: 0.5752927661, blue: 0.0007764452603, alpha: 1)
                 }
             }
         }
