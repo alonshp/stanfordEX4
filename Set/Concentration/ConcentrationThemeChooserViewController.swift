@@ -43,9 +43,6 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
         if segue.identifier == "Choose Theme" {
             if let themeButton = sender as? UIButton {
                 if let themeName = themeButton.currentTitle {
-//                    if let cvc = segue.destination as? ConcentrationViewController {
-//                        cvc.updateEmojiTheme(themeName)
-//                    }
                     if let unc = segue.destination as? UINavigationController {
                         if let cvc = unc.visibleViewController as? ConcentrationViewController {
                             cvc.updateEmojiTheme(themeName)
