@@ -12,6 +12,7 @@
 		160B10BB206A388D0092EF36 /* Concentration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10BA206A388D0092EF36 /* Concentration.swift */; };
 		160B10BD206A38F70092EF36 /* ConcentrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10BC206A38F70092EF36 /* ConcentrationViewController.swift */; };
 		160B10BF206A4D4E0092EF36 /* ConcentrationThemeChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10BE206A4D4E0092EF36 /* ConcentrationThemeChooserViewController.swift */; };
+		160B10E5206CE5030092EF36 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160B10E4206CE5030092EF36 /* Grid.swift */; };
 		163DCEDE20581DF500F94EAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163DCEDD20581DF500F94EAF /* AppDelegate.swift */; };
 		163DCEE320581DF500F94EAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 163DCEE120581DF500F94EAF /* Main.storyboard */; };
 		163DCEE520581DF500F94EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 163DCEE420581DF500F94EAF /* Assets.xcassets */; };
@@ -21,7 +22,6 @@
 		163DCEF5205A723200F94EAF /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163DCEF4205A723200F94EAF /* Deck.swift */; };
 		163DCEFD205AB23E00F94EAF /* SetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163DCEFC205AB23E00F94EAF /* SetTests.swift */; };
 		163DCF05205E498700F94EAF /* SelectedCardsAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163DCF04205E498700F94EAF /* SelectedCardsAttributes.swift */; };
-		16CE610520610B7700175406 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610420610B7700175406 /* Grid.swift */; };
 		16CE610720610C1F00175406 /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16CE610620610C1F00175406 /* CardView.xib */; };
 		16CE610B206123BA00175406 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610A206123BA00175406 /* CardView.swift */; };
 		16CE610D2061242A00175406 /* UIViewXibExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CE610C2061242A00175406 /* UIViewXibExtensions.swift */; };
@@ -44,6 +44,7 @@
 		160B10BA206A388D0092EF36 /* Concentration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concentration.swift; sourceTree = "<group>"; };
 		160B10BC206A38F70092EF36 /* ConcentrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationViewController.swift; sourceTree = "<group>"; };
 		160B10BE206A4D4E0092EF36 /* ConcentrationThemeChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcentrationThemeChooserViewController.swift; sourceTree = "<group>"; };
+		160B10E4206CE5030092EF36 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		163DCEDA20581DF500F94EAF /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		163DCEDD20581DF500F94EAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		163DCEE220581DF500F94EAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -57,7 +58,6 @@
 		163DCEFC205AB23E00F94EAF /* SetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetTests.swift; sourceTree = "<group>"; };
 		163DCEFE205AB23E00F94EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		163DCF04205E498700F94EAF /* SelectedCardsAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCardsAttributes.swift; sourceTree = "<group>"; };
-		16CE610420610B7700175406 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Grid.swift; path = ../../../../../../../Downloads/Grid.swift; sourceTree = "<group>"; };
 		16CE610620610C1F00175406 /* CardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardView.xib; sourceTree = "<group>"; };
 		16CE610A206123BA00175406 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		16CE610C2061242A00175406 /* UIViewXibExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewXibExtensions.swift; sourceTree = "<group>"; };
@@ -115,6 +115,7 @@
 		163DCEDC20581DF500F94EAF /* Set */ = {
 			isa = PBXGroup;
 			children = (
+				160B10E4206CE5030092EF36 /* Grid.swift */,
 				163DCF04205E498700F94EAF /* SelectedCardsAttributes.swift */,
 				16CE610E2067935100175406 /* AnimatedViewController.swift */,
 				160B10B5206A13A40092EF36 /* CardBehavier.swift */,
@@ -122,7 +123,6 @@
 				163DCEE120581DF500F94EAF /* Main.storyboard */,
 				163DCEF0205A636B00F94EAF /* SetGame.swift */,
 				163DCEF2205A637700F94EAF /* Card.swift */,
-				16CE610420610B7700175406 /* Grid.swift */,
 				16CE610620610C1F00175406 /* CardView.xib */,
 				16CE610A206123BA00175406 /* CardView.swift */,
 				16CE610C2061242A00175406 /* UIViewXibExtensions.swift */,
@@ -260,6 +260,7 @@
 				160B10BF206A4D4E0092EF36 /* ConcentrationThemeChooserViewController.swift in Sources */,
 				160B10BD206A38F70092EF36 /* ConcentrationViewController.swift in Sources */,
 				160B10B9206A383A0092EF36 /* ConcentrationCard.swift in Sources */,
+				160B10E5206CE5030092EF36 /* Grid.swift in Sources */,
 				163DCF05205E498700F94EAF /* SelectedCardsAttributes.swift in Sources */,
 				163DCEDE20581DF500F94EAF /* AppDelegate.swift in Sources */,
 				160B10BB206A388D0092EF36 /* Concentration.swift in Sources */,
@@ -267,7 +268,6 @@
 				16CE610B206123BA00175406 /* CardView.swift in Sources */,
 				163DCEF1205A636B00F94EAF /* SetGame.swift in Sources */,
 				16CE610F2067935100175406 /* AnimatedViewController.swift in Sources */,
-				16CE610520610B7700175406 /* Grid.swift in Sources */,
 				163DCEF3205A637700F94EAF /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
