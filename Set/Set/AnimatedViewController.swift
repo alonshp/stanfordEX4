@@ -40,7 +40,9 @@ class AnimatedViewController: UIViewController {
     
     private var prevFrameOfMatchCardViewsOnScreen = [CardView : CGRect]()
     
-    var firstLayingTheCards = true
+    private var firstLayingTheCards = true
+    
+    private var rotationGesture: UIRotationGestureRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +80,31 @@ class AnimatedViewController: UIViewController {
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.startNewGame(_:)))
         swipeUp.direction = .up
         self.view.addGestureRecognizer(swipeUp)
+        
+        // rotation gesture to cause all the cards to randomly reshuffle
+        rotationGesture = UIRotationGestureRecognizer(target: self, action: #selector(self.shuffleCards(_:)))
+        self.view.addGestureRecognizer(rotationGesture!)
+    }
+    
+    @objc func shuffleCards(_ sender: UIRotationGestureRecognizer) {
+        switch rotationGesture!.state {
+        case UIGestureRecognizerState.ended:
+            runPropertyAnimatorShuffleCards()
+        default:
+            break
+        }
+    }
+    
+    private func runPropertyAnimatorShuffleCards() {
+        for cardView in cardViews {
+            UIView.transition(with: cardView,
+                              duration: 0.5,
+                              options: [.transitionFlipFromLeft],
+                              animations: { cardView.isFaceUp = !cardView.isFaceUp },
+                              completion: {_ in self.game.shuffleCardsBiengPlayed()
+                                                self.updateViewFromModel()
+            })
+        }
     }
     
     private func handleWhenDealThreeMoreCards(){
