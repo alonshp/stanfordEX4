@@ -105,7 +105,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Theme 1"/>
                                         <connections>
-                                            <segue destination="YLh-1K-ARN" kind="showDetail" identifier="Choose Theme" id="9ox-3F-8B6"/>
+                                            <segue destination="4Fz-EP-v1G" kind="showDetail" identifier="Choose Theme" id="d56-Re-r7x"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IkP-JB-sfE">
@@ -113,7 +113,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Theme 2"/>
                                         <connections>
-                                            <segue destination="YLh-1K-ARN" kind="showDetail" identifier="Choose Theme" id="G5g-9g-fCP"/>
+                                            <segue destination="4Fz-EP-v1G" kind="showDetail" identifier="Choose Theme" id="JWy-yI-EUv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a7f-NJ-KW2">
@@ -121,7 +121,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Theme 3"/>
                                         <connections>
-                                            <segue destination="YLh-1K-ARN" kind="showDetail" identifier="Choose Theme" id="NCa-0d-IZv"/>
+                                            <segue destination="4Fz-EP-v1G" kind="showDetail" identifier="Choose Theme" id="Tkv-vx-yZ1"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HoD-DW-Cks">
@@ -129,7 +129,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Theme 4"/>
                                         <connections>
-                                            <segue destination="YLh-1K-ARN" kind="showDetail" identifier="Choose Theme" id="SbZ-ou-eaT"/>
+                                            <segue destination="4Fz-EP-v1G" kind="showDetail" identifier="Choose Theme" id="k4z-kZ-NzW"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -154,10 +154,29 @@
             </objects>
             <point key="canvasLocation" x="-476" y="213.64317841079463"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pat-2j-WWC">
+            <objects>
+                <navigationController id="4Fz-EP-v1G" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="meS-FG-lb8">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FVT-DJ-Nh9">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="YLh-1K-ARN" kind="relationship" relationship="rootViewController" id="rUq-lC-Nz0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ucA-KW-etb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2303" y="1125"/>
+        </scene>
         <!--Concentration-->
         <scene sceneID="tg9-d7-PX7">
             <objects>
-                <viewController hidesBottomBarWhenPushed="YES" id="YLh-1K-ARN" customClass="ConcentrationViewController" customModule="SetGame" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="YLh-1K-ARN" customClass="ConcentrationViewController" customModule="SetGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Y99-c5-ivm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -330,6 +349,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="Concentration" id="nN6-n5-6CX"/>
+                    <navigationItem key="navigationItem" id="Dby-JL-oOW"/>
                     <connections>
                         <outlet property="flipCountLabel" destination="k5s-Ye-yvt" id="EDn-wi-d5d"/>
                         <outlet property="gameScoreLable" destination="KEG-oq-HyE" id="5yW-5S-JkA"/>
@@ -378,7 +398,7 @@
                     <tabBarItem key="tabBarItem" title="Concentrstion" id="eEa-UR-X1v"/>
                     <connections>
                         <segue destination="H6Z-Wl-KAw" kind="relationship" relationship="masterViewController" id="TRb-k0-EaC"/>
-                        <segue destination="YLh-1K-ARN" kind="relationship" relationship="detailViewController" id="fv0-8B-a1l"/>
+                        <segue destination="4Fz-EP-v1G" kind="relationship" relationship="detailViewController" id="QYh-4z-9uO"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zhT-rT-6jS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -387,6 +407,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="fv0-8B-a1l"/>
+        <segue reference="d56-Re-r7x"/>
     </inferredMetricsTieBreakers>
 </document>

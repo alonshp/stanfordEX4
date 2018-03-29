@@ -14,7 +14,7 @@ class ConcentrationViewController: UIViewController {
     
     private var faceUpCardsNumbers = [Int]()
     
-    var currTheme: String?
+    var currTheme: String? 
     
     var numberOfPairsOfCards: Int {
         return (cardButtons.count + 1) / 2
@@ -27,6 +27,10 @@ class ConcentrationViewController: UIViewController {
     @IBOutlet private var cardButtons: [UIButton]!
     
     @IBOutlet weak var newGameButton: UIButton!
+    
+    override func viewDidLoad() {
+        self.navigationItem.title = currTheme
+    }
     
     private func showAlertWhenGameFinished() {
         // create the alert

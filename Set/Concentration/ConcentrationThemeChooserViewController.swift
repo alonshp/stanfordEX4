@@ -25,9 +25,11 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
     func splitViewController(_ splitViewController: UISplitViewController,
                              collapseSecondary secondaryViewController: UIViewController,
                              onto primaryViewController: UIViewController) -> Bool {
-        if let cvc = secondaryViewController as? ConcentrationViewController{
-            if cvc.currTheme == nil {
-                return true
+        if let unc = secondaryViewController as? UINavigationController {
+            if let cvc = unc.visibleViewController as? ConcentrationViewController {
+                if cvc.currTheme == nil {
+                    return true
+                }
             }
         }
         return false
@@ -41,8 +43,13 @@ class ConcentrationThemeChooserViewController: UIViewController, UISplitViewCont
         if segue.identifier == "Choose Theme" {
             if let themeButton = sender as? UIButton {
                 if let themeName = themeButton.currentTitle {
-                    if let cvc = segue.destination as? ConcentrationViewController {
-                        cvc.updateEmojiTheme(themeName)
+//                    if let cvc = segue.destination as? ConcentrationViewController {
+//                        cvc.updateEmojiTheme(themeName)
+//                    }
+                    if let unc = segue.destination as? UINavigationController {
+                        if let cvc = unc.visibleViewController as? ConcentrationViewController {
+                            cvc.updateEmojiTheme(themeName)
+                        }
                     }
                 }
             }
